@@ -332,7 +332,8 @@ def facturar(contrato_id, descripcion=None, sub_total=None):
 
     msg = EmailMessage(
         '{} Nueva Factura {} {} Generada'.format(settings.RAZON_SOCIAL, factura.serie, factura.folio),
-        html_email, settings.DEFAULT_FROM_EMAIL, to=[factura.correo_cliente, settings.DEFAULT_FROM_EMAIL]
+        html_email, settings.DEFAULT_FROM_EMAIL, to=[factura.correo_cliente],
+        reply_to=[settings.TENANT_EMAIL], cc=[settings.TENANT_EMAIL]
     )
     msg.attach('{}_{}.xml'.format(factura.serie, factura.folio), factura.xml.read(), 'application/xml')
     msg.attach('{}_{}.pdf'.format(factura.serie, factura.folio), factura.pdf.read(), 'application/pdf')
@@ -541,7 +542,8 @@ def facturar_rep(factura_id):
 
     msg = EmailMessage(
         '{} Nuevo REP {} {} Generada'.format(settings.RAZON_SOCIAL, factura.serie, factura.folio),
-        html_email, settings.DEFAULT_FROM_EMAIL, to=[factura.correo_cliente, settings.DEFAULT_FROM_EMAIL]
+        html_email, settings.DEFAULT_FROM_EMAIL, to=[factura.correo_cliente],
+        reply_to=[settings.TENANT_EMAIL], cc=[settings.TENANT_EMAIL]
     )
     msg.attach('{}_{}.xml'.format(factura.serie, factura.folio), factura.xml.read(), 'application/xml')
     msg.attach('{}_{}.pdf'.format(factura.serie, factura.folio), factura.pdf.read(), 'application/pdf')
@@ -567,7 +569,8 @@ def reenviar_correo(factura_id):
 
     msg = EmailMessage(
         '{} Factura {} {} Generada'.format(settings.RAZON_SOCIAL, factura.serie, factura.folio),
-        html_email, settings.DEFAULT_FROM_EMAIL, to=[factura.correo_cliente, settings.DEFAULT_FROM_EMAIL]
+        html_email, settings.DEFAULT_FROM_EMAIL, to=[factura.correo_cliente],
+        reply_to=[settings.TENANT_EMAIL], cc=[settings.TENANT_EMAIL]
     )
     msg.attach('{}_{}.xml'.format(factura.serie, factura.folio), factura.xml.read(), 'application/xml')
     msg.attach('{}_{}.pdf'.format(factura.serie, factura.folio), factura.pdf.read(), 'application/pdf')
@@ -642,7 +645,8 @@ def email_test(email):
 
     msg = EmailMessage(
         u'Mensaje de prueba desde una tarea', u'Mensaje de prueba desde una tarea',
-        settings.DEFAULT_FROM_EMAIL, to=[email]
+        settings.DEFAULT_FROM_EMAIL, to=[email],
+        reply_to=[settings.TENANT_EMAIL], cc=[settings.TENANT_EMAIL]
     )
     msg.send()
 
