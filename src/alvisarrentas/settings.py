@@ -158,8 +158,6 @@ SERVER_EMAIL = 'facturarentaautmatica<noreply@example.com>'
 
 
 # TENANT
-TENANT_RFC = 'LAN7008173R5'
-
 TENANT_EMAIL = 'noreply@example.com'
 
 RFC = 'LAN7008173R5'
