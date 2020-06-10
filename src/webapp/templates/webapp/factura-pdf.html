@@ -1,0 +1,336 @@
+{% load xmltools %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>CFDI</title>
+    <style>
+        body {
+            background-color: #FFFFFF;
+            font: normal 13px/150% "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        p {
+            background-color: #FFFFFF;
+            font: normal 13px "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .datagrid table {
+            border-collapse: collapse;
+            text-align: left;
+            width: 100%;
+        }
+
+        .datagrid {
+            font: normal 13px/150% "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: #fff;
+            overflow: hidden;
+            border: 1px solid #8C8C8C;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+        }
+
+        .datagrid table td, .datagrid table th {
+            padding: 3px 10px;
+        }
+
+        .datagrid table thead th {
+            background-color: #006699;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: bold;
+            border-left: 1px solid #0070A8;
+        }
+
+        .datagrid table thead th:first-child {
+            border: none;
+        }
+
+        .datagrid table tbody td {
+            color: #333333;
+            border-left: 1px solid #8C8C8C;
+            font-size: 13px;
+            font-weight: normal;
+        }
+
+        .datagrid table tbody .alt td {
+            background: #E1EEF4;
+            color: #00496B;
+        }
+
+        .datagrid table tbody td:first-child {
+            border-left: none;
+        }
+
+        .datagrid table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .datagrid table tfoot td div {
+            border-top: 1px solid #006699;
+            background: #E1EEF4;
+        }
+
+        .datagrid table tfoot td {
+            padding: 0;
+            font-size: 13px
+        }
+
+        .datagrid table tfoot td div {
+            padding: 2px;
+        }
+
+        .datagrid table tfoot td ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            text-align: right;
+        }
+
+        .datagrid table tfoot li {
+            display: inline;
+        }
+
+        .datagrid table tfoot li a {
+            text-decoration: none;
+            display: inline-block;
+            padding: 2px 8px;
+            margin: 1px;
+            color: #FFFFFF;
+            border: 1px solid #006699;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            background-color: #006699;
+        }
+
+        .datagrid table tfoot ul.active, .datagrid table tfoot ul a:hover {
+            text-decoration: none;
+            border-color: #006699;
+            color: #FFFFFF;
+            background: none;
+            background-color: #00557F;
+        }
+
+        div.dhtmlx_window_active, div.dhx_modal_cover_dv {
+            position: fixed !important;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <table style="width: 100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td width="50%" align="center">
+                <img src="" width="200px" height="100px"><br/>
+            </td>
+            <td width="50%" align="center">
+                <h2>Factura (CFDI)</h2>
+
+                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td align="right" style="background-color: #CCCCCC"><b>Serie y Folio Interno :</b></td>
+                    </tr>
+                    <tr>
+                        <td align="right" style="color: red;">
+                            <b>{{ xml|get_data:'@Serie' }} {{ xml|get_data:'@Folio' }}</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" style="background-color: #CCCCCC"><b>Folio Fiscal:</b></td>
+                    </tr>
+                    <tr>
+                        <td align="right">{{ xml|get_data:'cfdi:Complemento -> tfd:TimbreFiscalDigital -> @UUID' }}</td>
+                    </tr>
+                    <tr>
+                        <td align="right" style="background-color: #CCCCCC"><b>No de Serie del Certificado del CSD:</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">{{ xml|get_data:'@NoCertificado' }}</td>
+                    </tr>
+                    <tr>
+                        <td align="right" style="background-color: #CCCCCC"><b>Fecha y hora de emisión:</b></td>
+                    </tr>
+                    <tr>
+                        <td align="right">{{ xml|get_data:'@Fecha' }}</td>
+                    </tr>
+                    <tr>
+                        <td align="right" style="background-color: #CCCCCC"><b>Lugar de emisión:</b></td>
+                    </tr>
+                    <tr>
+                        <td align="right">{{ xml|get_data:'@LugarExpedicion' }} </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+<br/>
+
+<div class="datagrid">
+    <table style="width: 100%">
+        <thead>
+        <tr>
+            <th width="50%" align="center">
+                Emisor
+            </th>
+            <th width="50%" align="center">
+                Receptor
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td width="50%" align="left">
+                <b>RFC:</b> {{ xml | get_data:'cfdi:Emisor -> @Rfc' }}<br/>
+                <b>Nombre:</b> {{ xml | get_data:'cfdi:Emisor -> @Nombre' }}<br/>
+                <b>Régimen Fiscal:</b> {{ xml | get_data:'cfdi:Emisor -> @RegimenFiscal' }}<br/>
+            </td>
+            <td width="50%" align="left">
+                <b>RFC:</b> {{ xml | get_data:'cfdi:Receptor -> @Rfc' }}<br/>
+                <b>Nombre:</b> {{ xml | get_data:'cfdi:Receptor -> @Nombre' }}<br/>
+                <b>Uso CFDI:</b> {{ xml | get_data:'cfdi:Receptor -> @UsoCFDI' }}<br/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<br/>
+
+<div class="datagrid">
+    <table style="width: 100%">
+        <thead>
+        <tr>
+            <th>
+                ClaveProdServ
+            </th>
+            <th>
+                Cantidad
+            </th>
+            <th>
+                ClaveUnidad
+            </th>
+            <th>
+                Cuenta Predial
+            </th>
+            <th>
+                Descripcion
+            </th>
+            <th>
+                ValorUnitario
+            </th>
+            <th>
+                Importe
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ xml | get_data:'cfdi:Conceptos -> cfdi:Concepto -> @ClaveProdServ' }}</td>
+            <td>{{ xml | get_data:'cfdi:Conceptos -> cfdi:Concepto -> @Cantidad' }}</td>
+            <td>{{ xml | get_data:'cfdi:Conceptos -> cfdi:Concepto -> @ClaveUnidad' }}</td>
+            <td>{{ xml | get_data:'cfdi:Conceptos -> cfdi:Concepto -> cfdi:CuentaPredial -> @Numero' }}</td>
+            <td>{{ xml | get_data:'cfdi:Conceptos -> cfdi:Concepto -> @Descripcion' }}</td>
+            <td>{{ xml | get_data:'cfdi:Conceptos -> cfdi:Concepto -> @ValorUnitario' }}</td>
+            <td>{{ xml | get_data:'cfdi:Conceptos -> cfdi:Concepto -> @Importe' }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<table width="100%">
+    <tr>
+        <td width="70%">
+            <div class="datagrid">
+                <p>
+                    <b>Método de pago:</b> {{ xml|get_data:'@MetodoPago' }}
+                </p>
+
+                <p>
+                    <b>Forma de pago: </b> {{ xml | get_data:'@FormaPago' }}
+                </p>
+            </div>
+        </td>
+        <td width="30%">
+            <div class="datagrid">
+                <table width="100%">
+                    <tr>
+                        <td>Sub Total :</td>
+                        <td>{{ xml | get_data:'@SubTotal' | intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td>IVA 16%</td>
+                        <td>{{ xml | get_data:'cfdi:Impuestos -> cfdi:Traslados -> cfdi:Traslado -> @Importe' | intcomma }}</td>
+                    </tr>
+                    {% for traslado in xml|get_data:'cfdi:Impuestos -> cfdi:Retenciones -> cfdi:Retencion' %}
+                        <tr>
+                            <td>Ret. {% if traslado|get_data:'@Impuesto' == '002' %}IVA{% else %}ISR{% endif %}:</td>
+                            <td>{{ traslado | get_data:'@Importe' | intcomma }}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td>Total :</td>
+                        <td>{{ xml | get_data:'@Total' | intcomma }}</td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<p><b>Cadena Original del complemento de certificación digital del SAT</b></p>
+
+<p style="word-break: break-all">
+    <small>{{ cadena_original }}</small>
+</p>
+
+<p><b>Sello del SAT</b></p>
+
+<p style="word-break: break-all">
+    <small>{{ xml|get_data:'cfdi:Complemento -> tfd:TimbreFiscalDigital -> @SelloSAT' }}</small>
+</p>
+
+<p><b>Sello Digital del CFDI</b></p>
+
+<p style="word-break: break-all">
+    <small>{{ xml|get_data:'cfdi:Complemento -> tfd:TimbreFiscalDigital -> @SelloCFD' }}</small>
+</p>
+
+<table width="100%">
+    <tr>
+        <td>
+            <p align="left">
+
+            <p>
+                <b>No de Serie del Certificado del SAT:</b>
+                {{ xml|get_data:'cfdi:Complemento -> tfd:TimbreFiscalDigital -> @NoCertificadoSAT' }}
+            </p>
+
+            <p>
+                <b>Fecha y hora de certificación:</b>
+                {{ xml|get_data:'cfdi:Complemento -> tfd:TimbreFiscalDigital -> @FechaTimbrado' }}
+            </p>
+
+            <p>
+                <b>RFC PAC:</b>
+                {{ xml|get_data:'cfdi:Complemento -> tfd:TimbreFiscalDigital -> @RfcProvCertif' }}
+            </p>
+        </td>
+        <td>
+            <p align="right">
+                <img width="175mm" height="175mm" src="data:image/png;base64, {{ cbb }}"/>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h4>Este documento es una representación impresa de un CFDI</h4>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

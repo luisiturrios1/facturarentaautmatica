@@ -1,0 +1,36 @@
+{% extends 'webapp/base.html' %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="card">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fe fe-book"></i> Factura
+                            <b>{{ factura.serie }}</b> {{ factura.folio }}</h3>
+                    </div>
+                    <div class="card-body">
+                        {% bootstrap_messages %}
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                    </div>
+                    <div class="card-footer text-right">
+                        <a href="{{ factura.get_absolute_url }}" class="btn btn-secondary"><i
+                                class="fe fe-skip-back"></i> Regresar</a>
+                        <button type="reset" class="btn btn-primary"><i class="fe fe-refresh-ccw"></i> Limpiar</button>
+                        <button type="submit" class="btn btn-success"><i class="fe fe-edit"></i> Pagar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(function () {
+            $("#id_fecha_pago").attr("type", "date");
+        });
+    </script>
+{% endblock %}

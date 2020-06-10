@@ -1,0 +1,37 @@
+{% extends 'webapp/base.html' %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12 mx-auto">
+            <div class="card">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ formset.management_form }}
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fe fe-search"></i> Facturas sin pagar entre el {{ fecha_inicial }} - {{ fecha_final }}</h3>
+                    </div>
+                    <div class="card-body">
+                        {% bootstrap_formset_errors formset %}
+                        <table class="table table-bordered">
+                            <tbody>
+                            {% for form in formset %}
+                                <tr>
+                                    <td>
+                                        <div class="form-inline">{% bootstrap_form form %}</div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer text-right">
+                        <a href="{% url 'webapp:pagos-buscar' %}" class="btn btn-secondary"><i class="fe fe-skip-back"></i> Regresar</a>
+                        <button type="reset" class="btn btn-primary"><i class="fe fe-refresh-ccw"></i> Limpiar</button>
+                        <button type="submit" class="btn btn-success"><i class="fe fe-search"></i> Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

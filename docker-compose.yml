@@ -1,0 +1,27 @@
+version: "3"
+services:
+  celery-beat:
+    build:
+      context: .
+      dockerfile: etc/celery-beat/Dockerfile
+    container_name: celery-beat
+    restart: on-failure
+  celery-worker:
+    build:
+      context: .
+      dockerfile: etc/celery-worker/Dockerfile
+    container_name: celery-worker
+    restart: on-failure
+    volumes:
+      - ./media:/usr/src/app/media/
+  wsgi-server:
+    build:
+      context: .
+      dockerfile: etc/wsgi-server/Dockerfile
+    container_name: wsgi-server
+    restart: on-failure
+    ports:
+      - 3032:3031
+    volumes:
+      - ./staticfiles:/usr/src/app/staticfiles/
+      - ./media:/usr/src/app/media/

@@ -1,0 +1,56 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1 class="page-title">
+            {{ razon_social }}
+        </h1>
+    </div>
+    <div class="row row-cards">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card p-3">
+                <div class="d-flex align-items-center">
+                    <span class="stamp stamp-md bg-red mr-3">
+                      <i class="fe fe-box"></i>
+                    </span>
+
+                    <div>
+                        <h4 class="m-0"><a href="{% url 'webapp:contrato-list' %}">Contratos
+                        </a></h4>
+                        <small class="text-muted">Administración de contratos</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card p-3">
+                <div class="d-flex align-items-center">
+                    <span class="stamp stamp-md bg-blue mr-3">
+                      <i class="fe fe-book"></i>
+                    </span>
+
+                    <div>
+                        <h4 class="m-0"><a href="{% url 'webapp:factura-list' %}">CFDIs
+                        </a></h4>
+                        <small class="text-muted">Administración de CFDIs</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card p-3">
+                <div class="d-flex align-items-center">
+                    <span class="stamp stamp-md bg-yellow mr-3">
+                      <i class="fe fe-dollar-sign"></i>
+                    </span>
+
+                    <div>
+                        <h4 class="m-0"><a href="{% url 'webapp:pagos-buscar' %}">Pagos
+                        </a></h4>
+                        <small class="text-muted">Cargar pagos</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

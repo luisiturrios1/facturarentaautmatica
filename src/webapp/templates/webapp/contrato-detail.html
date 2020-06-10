@@ -1,0 +1,89 @@
+{% extends 'webapp/base.html' %}
+{% load humanize %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fe fe-box"></i> {{ contrato }}</h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>Nombre predio:</strong> {{ contrato.nombre_predio }}</p>
+
+                    <p><strong>Cuenta predial:</strong> {{ contrato.cuenta_predial }}</p>
+
+                    <p><strong>Nombre cliente:</strong> {{ contrato.nombre_cliente }}</p>
+
+                    <p><strong>Rfc cliente:</strong> {{ contrato.rfc_cliente }}</p>
+
+                    <p><strong>Correo cliente:</strong> {{ contrato.correo_cliente }}</p>
+
+                    <p><strong>Telefono cliente:</strong> {{ contrato.telefono_cliente }}</p>
+
+                    <p><strong>Saldo contrato:</strong> {{ contrato.saldo_contrato | intcomma }}</p>
+
+                    <p><strong>Precio mensual:</strong> ${{ contrato.precio_mensual | intcomma }}</p>
+
+                    <p><strong>Retener Impuestos:</strong> {% if contrato.retener_impuestos %}SI{% else %}NO{% endif %} </p>
+
+                    <p><strong>Uso CFDI:</strong> {{ contrato.get_uso_cfdi_display }} </p>
+
+                    <p><strong>Metodo de Pago:</strong> {{ contrato.get_metodo_pago_display }} </p>
+
+                    <p><strong>Forma de Pago:</strong> {{ contrato.get_forma_pago_display }} </p>
+
+                    <p><strong>Dia facturacion:</strong> {{ contrato.get_dia_facturacion_display }}</p>
+                </div>
+                <div class="card-footer text-right">
+                    <a href="{% url 'webapp:contrato-list' %}" class="btn btn-secondary"><i class="fe fe-skip-back"></i>
+                        Regresar</a>
+                    <a href="{% url 'webapp:contrato-delete' pk=contrato.pk %}" class="btn btn-danger"><i
+                            class="fe fe-trash"></i> Borrar</a>
+                    <a href="{% url 'webapp:contrato-update' pk=contrato.pk %}" class="btn btn-success"><i
+                            class="fe fe-edit"></i> Editar</a>
+                    <a href="{% url 'webapp:contrato-facturar' pk=contrato.pk %}" class="btn btn-primary"><i
+                            class="fe fe-book"></i> Generar Factura</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fe fe-book"></i> Ultimos CFDIs</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-container table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Folio</th>
+                                <th>Fecha</th>
+                                <th>Pago</th>
+                                <th>Concepto</th>
+                                <th>Sub Total</th>
+                                <th>Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for factura in contrato.factura_set.all %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ factura.get_absolute_url }}"><b>{{ factura.serie }}</b> {{ factura.folio }}
+                                        </a></td>
+                                    <td>{{ factura.fecha | date:'d/m/Y' }}</td>
+                                    <td>{{ factura.fecha_pago | date:'d/m/Y' }}</td>
+                                    <td>{{ factura.concepto }}</td>
+                                    <td>${{ factura.sub_total | intcomma }}</td>
+                                    <td>${{ factura.total | intcomma }}</td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

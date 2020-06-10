@@ -1,0 +1,49 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fe fe-box"></i> {{ contrato }}</h3>
+                </div>
+                <div class="card-body">
+                    ¿Realmente desea borrar {{ contrato }}?
+                </div>
+                <div class="card-footer text-right">
+                    <a href="{% url 'webapp:contrato-detail' pk=contrato.pk %}" class="btn btn-secondary"><i
+                            class="fe fe-skip-back"></i> Regresar</a>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#dangerModal"><i
+                            class="fe fe-trash"></i> Si, borrar
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-danger" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">¿Realmente desea borrar?</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>¿Realmente desea eliminar {{ contrato }}?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fe fe-x"></i>
+                                Cancelar
+                            </button>
+                            <form method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger"><i class="fe fe-trash"></i> Eliminar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

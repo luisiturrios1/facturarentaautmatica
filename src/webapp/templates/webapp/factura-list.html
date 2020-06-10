@@ -1,0 +1,46 @@
+{% extends 'webapp/base.html' %}
+{% load humanize %}
+{% load django_tables2 %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fe fe-book"></i> Facturas</h3>
+
+                    <div class="card-options">
+                        <a href="{% url 'webapp:factura-excel' %}" class="btn btn-success btn-sm"><i
+                                class="fe fe-download"></i> Excel</a>
+                        &nbsp;
+                        <a href="{% url 'webapp:factura-zip' %}" class="btn btn-success btn-sm"><i
+                                class="fe fe-download"></i> ZIP</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if filter %}
+                        <form method="get" class="form-inline">
+                            {% bootstrap_form filter.form layout='inline' %}
+                            &nbsp;
+                            <button type="submit" class="btn btn-primary">Buscar</button>
+                            &nbsp;
+                            <a class="btn btn-secondary" href="{% url 'webapp:factura-list' %}">Limpiar</a>
+                        </form>
+                    {% endif %}
+
+                    {% render_table table %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(function () {
+            $("#id_fecha_0").attr("type", "date");
+            $("#id_fecha_1").attr("type", "date");
+        });
+    </script>
+{% endblock %}

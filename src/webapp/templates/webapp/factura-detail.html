@@ -1,0 +1,63 @@
+{% extends 'webapp/base.html' %}
+{% load humanize %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fe fe-book"></i> Factura
+                        <b>{{ factura.serie }}</b> {{ factura.folio }}</h3>
+                </div>
+                <div class="card-body">
+                    <p><b>Folio Fiscal:</b> {{ factura.uuid }}</p>
+
+                    <p><b>Serie:</b> {{ factura.serie }} {{ factura.folio }}</p>
+
+                    <p><b>Fecha:</b> {{ factura.fecha }}</p>
+
+                    <p><b>Cliente:</b> {{ factura.rfc_cliente }} {{ factura.nombre_cliente }}</p>
+
+                    <p><b>Correo Electrónico:</b> {{ factura.correo_cliente }}</p>
+
+                    <p><b>Concepto:</b> {{ factura.concepto }}</p>
+
+                    <p><b>IVA TRASLADADO :</b> ${{ factura.iva_trasladado | intcomma }} <b>IVA RETENIDO:</b>
+                        ${{ factura.iva_retenido | intcomma }} <b>ISR RETENIDO:</b>
+                        ${{ factura.isr_retenido | intcomma }}</p>
+
+                    <p><b>Sub Total:</b> ${{ factura.sub_total | intcomma }} <b>Total:</b>
+                        ${{ factura.total | intcomma }}</p>
+
+                    <p><b>Contrato:</b> <a href="{{ factura.contrato.get_absolute_url }}">{{ factura.contrato }}</a></p>
+
+                    <p><b>Pagada:</b> {% if factura.pagada %}SI el {{ factura.fecha_pago | date:'d/m/Y' }}{% else %}
+                        NO{% endif %}</p>
+
+                    {% if factura.pagada %}
+                        <hr>
+                        <a href="{{ factura.xml_rep.url }}" target="_blank" class="btn btn-primary"><i
+                                class="fe fe-download"></i> XML REP</a>
+                        <a href="{{ factura.pdf_rep.url }}" target="_blank" class="btn btn-primary"><i
+                                class="fe fe-chrome"></i>
+                            PDF REP</a>
+                    {% endif %}
+
+                </div>
+                <div class="card-footer text-right">
+                    <a href="{{ factura.contrato.get_absolute_url }}" class="btn btn-secondary"><i
+                            class="fe fe-skip-back"></i>
+                        Regresar</a>
+                    <a href="{{ factura.xml.url }}" target="_blank" class="btn btn-primary"><i
+                            class="fe fe-download"></i> XML</a>
+                    <a href="{{ factura.pdf.url }}" target="_blank" class="btn btn-primary"><i class="fe fe-chrome"></i>
+                        PDF</a>
+                    {% if not factura.pagada %}
+                        <a href="{% url 'webapp:factura-pagar' pk=factura.pk %}" class="btn btn-success"><i
+                                class="fe fe-dollar-sign"></i> Pagada</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,7 @@
+UUID: {{ factura.uuid }}
+UUID REP: {{ factura.uuid_rep }}
+Folio: {{ factura.serie }} {{ factura.folio }}
+Cliente: {{ factura.rfc_cliente }} {{ factura.nombre_cliente }}
+Concepto: {{ factura.concepto }} 
+Sub Total: {{ factura.sub_total|floatformat:2 }}
+Total: {{ factura.total|floatformat:2 }}
