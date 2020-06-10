@@ -2,7 +2,7 @@ M2Crypto==0.33.0
 redis==3.2.1
 mysqlclient==1.4.2.post1
 celery==4.2.1
-Django==1.11.15
+Django==1.11.29
 django-bootstrap3==10.0.1
 django-filter==1.1.0
 django-tables2==1.21.2
