@@ -74,7 +74,7 @@ class Contrato(models.Model):
     correo_cliente = models.EmailField(null=False, blank=False)
     telefono_cliente = models.CharField(max_length=10, null=True, blank=True)
 
-    saldo_contrato = models.DecimalField(max_digits=20, decimal_places=2, null=False, blank=False, default=0)
+    saldo_contrato = models.DecimalField(max_digits=20, decimal_places=2, null=False, blank=False, default=0, verbose_name='saldo vencido')
     precio_mensual = models.DecimalField(
         max_digits=20, decimal_places=2, null=False, help_text=u'Ingrese el precio antes de impuestos'
     )
